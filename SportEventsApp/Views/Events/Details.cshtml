@@ -1,0 +1,28 @@
+﻿@model SportEventsApp.Models.Event
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@Model.Name</h2>
+<ul>
+    <li>Prize 1: @Model.Prize_1</li>
+    <li>Prize 2: @Model.Prize_2</li>
+    <li>Prize 3: @Model.Prize_3</li>
+
+    <li>Host 1: @Model.Host_1</li>
+    <li>Host 2: @Model.Host_2</li>
+    <li>Host 3: @Model.Host_3</li>
+
+    <li>Date: @Model.Date.ToLongDateString()</li>
+    <li>Time: @Model.Time.ToString()</li>
+    <li>EntryFees: @Model.Entry_Fees</li>
+    <li>No Of Players: @Model.No_Of_Players</li>
+    <li>Address: @Model.Address</li>
+ 
+    <li>Location_URL: @Model.Location_URL</li>
+</ul>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

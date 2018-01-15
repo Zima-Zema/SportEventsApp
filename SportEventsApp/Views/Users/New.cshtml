@@ -1,0 +1,64 @@
+﻿@model SportEventsApp.ViewModel.UsersViewModel
+@{
+    ViewBag.Title = "New";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (Model.User.Id > 0)
+{
+    <h2>Edit User</h2>
+}
+else
+{
+    <h2>New User</h2>
+}
+@using (Html.BeginForm("Save", "Users", FormMethod.Post))
+{
+    @Html.ValidationSummary(true, "Invalid Registration")
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.User.UserName)
+        @Html.TextBoxFor(m => m.User.UserName, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.User.UserName)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.User.Mobile)
+        @Html.TextBoxFor(m => m.User.Mobile, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.User.Mobile)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.User.Status)
+        @Html.DropDownListFor(m => m.User.Status, new SelectList(new[] { new { Value = "true", Text = "Varified" }, new { Value = "false", Text = "Unverified" },}, "Value", "Text"), "Select Status", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.User.Status)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.User.Event_ID)
+        @Html.DropDownListFor(m => m.User.Event_ID, new SelectList(Model.Events, "Id", "Name"), "Select Event", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.User.Event_ID)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.User.Group_ID)
+        @Html.DropDownListFor(m => m.User.Group_ID, new SelectList(Model.Groups, "Id", "Name"), "Select Group", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.User.Group_ID)
+    </div>
+
+    @Html.HiddenFor(m => m.User.Id)
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <div class="form-group col-md-6">
+            @Html.ActionLink("Back", "Index", null, new { @class = "btn btn-default col-md-6" })
+        </div>
+        <div class="form-group col-md-6">
+            <input type="submit" value="Save" class="btn btn-success col-md-6" />
+        </div>
+    </div>
+}
+
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+}
