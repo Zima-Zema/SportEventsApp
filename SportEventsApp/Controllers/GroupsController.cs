@@ -80,7 +80,7 @@ namespace SportEventsApp.Controllers
                 return BadRequest();
             }
             var groups = db.Events.SingleOrDefault(ee => ee.Id == eventId).Groups;
-            if (groups == null || groups.Count == 0)
+            if (groups == null)
             {
                 return NotFound();
             }
@@ -157,7 +157,7 @@ namespace SportEventsApp.Controllers
             {
                 return NotFound();
             }
-
+            group.Users.ForEach(us => us.Group_ID = null);
             db.Groups.Remove(group);
             db.SaveChanges();
 

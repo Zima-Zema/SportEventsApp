@@ -1,0 +1,120 @@
+﻿@model SportEventsApp.Models.Group
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@Model.Name</h2>
+
+<ul>
+    <li>Name: @Model.Name</li>
+    <li>Users: @Model.Users.Count</li>
+    <li>Event: @Model.Event.Name</li>
+   
+</ul>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
+<table id="users-group" class="table table-hover table-bordered">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+
+            <th>
+                Mobile
+            </th>
+            <th>
+               Status
+            </th>
+            <th>
+               Group Name
+            </th>
+            <th>
+                Event Name
+            </th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+
+</table>
+
+@section scripts{
+
+    <script>
+        $(document).ready(function () {
+            var table = $("#users-group").DataTable({
+                ajax: {
+                    url: "/api/GroupUsers/@Model.Id",
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "UserName",
+                        render: function (data, type, user) {
+                            return "<a href='/users/edit/" + user.id + "'>" + user.userName + "</a>"
+                        }
+                    },
+                    {
+                        data: "mobile"
+                    },
+                    {
+                        data: "Status",
+                        render: function (s) {
+                            return s == true ? "Varified" : "Unverified"
+                        }
+                    },
+                    {
+                        data: "group.name",
+                        render: function (u) {
+                            return u ? u : 'N/A'
+                        }
+
+                    },
+                    {
+                        data: "event.name",
+                        render: function (u) {
+                            return u ? u : 'N/A'
+                        }
+                    },
+                    {
+                        data: "id",
+                        render: function (data) {
+                            return "<button class='btn btn-danger btn-xs js-delete' data-customer-id=" + data + ">Delete</button>";
+                        }
+                    }
+                ]
+            });
+
+            $("#users-group").on("click", ".js-delete", function () {
+                var delbutton = $(this);
+                bootbox.confirm("Are You Sure To Delete This User?!", function (result) {
+                    if (result) {
+                        $.ajax({
+                            url: "/api/users/" + delbutton.attr("data-customer-id"),
+                            method: "DELETE",
+                            success: function () {
+                                table.row(delbutton.parents("tr")).remove().draw();
+                            },
+                            error: function () {
+
+                            }
+
+
+                        });
+
+                    }
+
+
+                })
+
+            });
+
+        });
+
+    </script>
+}

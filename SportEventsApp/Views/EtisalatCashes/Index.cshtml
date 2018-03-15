@@ -1,0 +1,89 @@
+﻿@model IEnumerable<SportEventsApp.Models.EtisalatCash>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Etisalat Cashes</h2>
+
+<p>
+    @Html.ActionLink("Create New", "New", null, new { @class = "btn btn-primary" })
+</p>
+
+<table id="etisalat" class="table table-hover table-bordered">
+    <thead>
+        <tr>
+            <th>
+                Number
+            </th>
+
+            <th>
+                Limit
+            </th>
+            <th>
+                Event Name
+            </th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+
+</table>
+
+@section scripts{
+
+    <script>
+        $(document).ready(function () {
+            var table = $("#etisalat").DataTable({
+                ajax: {
+                    url: "/api/EtisalatCashes",
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "Number",
+                        render: function (data, type, et) {
+                            return "<a href='/EtisalatCashes/edit/" + et.id + "'>" + et.number + "</a>"
+                        }
+                    },
+                    {
+                        data: "count",
+                    },
+                    {
+                        data: "event.name",
+                        render: function (u) {
+                            return u ? u : 'N/A'
+                        }
+                    },
+                    {
+                        data: "id",
+                        render: function (data) {
+                            return "<button class='btn btn-danger btn-xs js-delete' data-etisalat-id=" + data + ">Delete</button>";
+                        }
+                    }
+                ]
+            });
+
+            $("#etisalat").on("click", ".js-delete", function () {
+                var delbutton = $(this);
+                bootbox.confirm("Are You Sure To Delete This Number?!", function (result) {
+                    if (result) {
+                        $.ajax({
+                            url: "/api/EtisalatCashes/" + delbutton.attr("data-etisalat-id"),
+                            method: "DELETE",
+                            success: function () {
+                                table.row(delbutton.parents("tr")).remove().draw();
+                            },
+                            error: function () {
+
+                            }
+                        });
+                    }
+                })
+
+            });
+
+        });
+
+    </script>
+}

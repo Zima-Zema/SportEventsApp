@@ -103,6 +103,7 @@ C:\Users\Zima\Documents\Visual Studio 2015\Projects\SportEventsApp\SportEventsAp
 C:\Users\Zima\Documents\Visual Studio 2015\Projects\SportEventsApp\SportEventsApp\obj\Debug\SportEventsApp.csproj.GenerateResource.Cache
 C:\Users\Zima\Documents\Visual Studio 2015\Projects\SportEventsApp\SportEventsApp\obj\Debug\SportEventsApp.dll
 C:\Users\Zima\Documents\Visual Studio 2015\Projects\SportEventsApp\SportEventsApp\obj\Debug\SportEventsApp.pdb
-C:\Users\Zima\Documents\Visual Studio 2015\Projects\SportEventsApp\SportEventsApp\obj\Debug\SportEventsApp.Migrations.foo.resources
-C:\Users\Zima\Documents\Visual Studio 2015\Projects\SportEventsApp\SportEventsApp\obj\Debug\SportEventsApp.csprojResolveAssemblyReference.cache
 C:\Users\Zima\Documents\Visual Studio 2015\Projects\SportEventsApp\SportEventsApp\obj\Debug\SportEventsApp.Migrations.AddCashNumberToUserModel.resources
+C:\Users\Zima\Documents\Visual Studio 2015\Projects\SportEventsApp\SportEventsApp\obj\Debug\SportEventsApp.Migrations.FixCascadeDelete.resources
+C:\Users\Zima\Documents\Visual Studio 2015\Projects\SportEventsApp\SportEventsApp\obj\Debug\SportEventsApp.csprojResolveAssemblyReference.cache
+C:\Users\Zima\Documents\Visual Studio 2015\Projects\SportEventsApp\SportEventsApp\obj\Debug\SportEventsApp.Migrations.LastMigration.resources

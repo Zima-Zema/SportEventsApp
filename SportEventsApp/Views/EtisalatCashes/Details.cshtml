@@ -1,0 +1,18 @@
+﻿@model SportEventsApp.Models.EtisalatCash
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@Model.Number</h2>
+
+<ul>
+    <li>Number: @Model.Number</li>
+    <li>Users: @Model.Count</li>
+    <li>Event: @Model.Event.Name</li>
+
+</ul>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

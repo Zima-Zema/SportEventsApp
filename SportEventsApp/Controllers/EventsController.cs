@@ -191,7 +191,10 @@ namespace SportEventsApp.Controllers
             {
                 return NotFound();
             }
-
+            @event.EtisalatCashNumbers.ForEach(et => et.Event_ID = null);
+            @event.VodafoneCashNumbers.ForEach(v => v.Event_ID = null);
+            @event.Users.ForEach(u => u.Event_ID = null);
+            @event.Groups.ForEach(g => g.Event_ID = null);
             db.Events.Remove(@event);
             db.SaveChanges();
 

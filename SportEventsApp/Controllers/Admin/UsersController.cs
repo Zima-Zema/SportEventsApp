@@ -10,6 +10,7 @@ using System.Net;
 
 namespace SportEventsApp.Controllers.Admin
 {
+    [Authorize]
     public class UsersController : Controller
     {
         ApplicationDbContext _context;

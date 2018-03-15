@@ -244,8 +244,12 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\Admin\EtisalatCashesController.cs" />
     <Compile Include="Controllers\Admin\EventsController.cs" />
+    <Compile Include="Controllers\Admin\GroupsController.cs" />
+    <Compile Include="Controllers\Admin\ManageController.cs" />
     <Compile Include="Controllers\Admin\UsersController.cs" />
+    <Compile Include="Controllers\Admin\VodafoneCashesController.cs" />
     <Compile Include="Controllers\EtisalatCashesController.cs" />
     <Compile Include="Controllers\EventsController.cs" />
     <Compile Include="Controllers\GroupsController.cs" />
@@ -299,13 +303,17 @@
     <Compile Include="Migrations\201801071036126_EditUserModel.Designer.cs">
       <DependentUpon>201801071036126_EditUserModel.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201801071453384_foo.cs" />
-    <Compile Include="Migrations\201801071453384_foo.Designer.cs">
-      <DependentUpon>201801071453384_foo.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\201801091124029_AddCashNumberToUserModel.cs" />
     <Compile Include="Migrations\201801091124029_AddCashNumberToUserModel.Designer.cs">
       <DependentUpon>201801091124029_AddCashNumberToUserModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201801161816595_FixCascadeDelete.cs" />
+    <Compile Include="Migrations\201801161816595_FixCascadeDelete.Designer.cs">
+      <DependentUpon>201801161816595_FixCascadeDelete.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201801191523134_LastMigration.cs" />
+    <Compile Include="Migrations\201801191523134_LastMigration.Designer.cs">
+      <DependentUpon>201801191523134_LastMigration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
@@ -314,13 +322,17 @@
     <Compile Include="Models\Event.cs" />
     <Compile Include="Models\Group.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\VodafoneCash.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModel\EtisalateViewModel.cs" />
     <Compile Include="ViewModel\EventsViewModel.cs" />
+    <Compile Include="ViewModel\GroupsViewModel.cs" />
     <Compile Include="ViewModel\UsersViewModel.cs" />
+    <Compile Include="ViewModel\VadafoneViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\XmlDocument.xml" />
@@ -676,6 +688,21 @@
     <Content Include="Views\Users\Index.cshtml" />
     <Content Include="Views\Users\New.cshtml" />
     <Content Include="Views\Users\Details.cshtml" />
+    <Content Include="Views\Groups\Index.cshtml" />
+    <Content Include="Views\Groups\Details.cshtml" />
+    <Content Include="Views\Groups\New.cshtml" />
+    <Content Include="Views\EtisalatCashes\Index.cshtml" />
+    <Content Include="Views\EtisalatCashes\Details.cshtml" />
+    <Content Include="Views\EtisalatCashes\New.cshtml" />
+    <Content Include="Views\VodafoneCashes\Details.cshtml" />
+    <Content Include="Views\VodafoneCashes\Index.cshtml" />
+    <Content Include="Views\VodafoneCashes\New.cshtml" />
+    <Content Include="Views\Manage\AddPhoneNumber.cshtml" />
+    <Content Include="Views\Manage\ChangePassword.cshtml" />
+    <Content Include="Views\Manage\Index.cshtml" />
+    <Content Include="Views\Manage\ManageLogins.cshtml" />
+    <Content Include="Views\Manage\SetPassword.cshtml" />
+    <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Providers\" />
@@ -721,11 +748,14 @@
     <EmbeddedResource Include="Migrations\201801071036126_EditUserModel.resx">
       <DependentUpon>201801071036126_EditUserModel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201801071453384_foo.resx">
-      <DependentUpon>201801071453384_foo.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201801091124029_AddCashNumberToUserModel.resx">
       <DependentUpon>201801091124029_AddCashNumberToUserModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801161816595_FixCascadeDelete.resx">
+      <DependentUpon>201801161816595_FixCascadeDelete.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801191523134_LastMigration.resx">
+      <DependentUpon>201801191523134_LastMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

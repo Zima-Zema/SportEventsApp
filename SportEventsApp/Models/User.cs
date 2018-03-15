@@ -18,10 +18,12 @@ namespace SportEventsApp.Models
         public bool Status { get; set; } = false;
 
         [ForeignKey("Group")]
+        [Display(Name = "Group")]
         public int? Group_ID { get; set; }
         public virtual Group Group { get; set; }
 
         [ForeignKey("Event")]
+        [Display(Name = "Event")]
         public int? Event_ID { get; set; }
         public virtual Event Event { get; set; }
         public string CashNumber { get; set; }

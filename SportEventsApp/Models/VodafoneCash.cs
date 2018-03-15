@@ -12,10 +12,12 @@ namespace SportEventsApp.Models
         public int Id { get; set; }
         [RegularExpression(@"^(010)([0-9]{8})$")]
         public string Number { get; set; }
+        [Range(0,12)]
         public int Count { get; set; } = 0;
 
         [ForeignKey("Event")]
-        public int Event_ID { get; set; }
+        [Display(Name = "Event")]
+        public int? Event_ID { get; set; }
         public virtual Event Event { get; set; }
 
     }

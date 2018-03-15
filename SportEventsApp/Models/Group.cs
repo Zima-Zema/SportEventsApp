@@ -19,8 +19,8 @@ namespace SportEventsApp.Models
         [InverseProperty("Group")]
         public virtual List<User> Users { get; set; }
 
-        [ForeignKey("Event")]
-        public int Event_ID { get; set; }
+        [ForeignKey("Event")][Required][Display(Name ="Event")]
+        public int? Event_ID { get; set; }
         public virtual Event Event { get; set; }
 
     }

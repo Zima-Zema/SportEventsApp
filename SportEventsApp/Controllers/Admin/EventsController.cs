@@ -10,6 +10,7 @@ using SportEventsApp.ViewModel;
 
 namespace SportEventsApp.Controllers.Admin
 {
+    [Authorize]
     public class EventsController : Controller
     {
         private ApplicationDbContext _context;
@@ -18,6 +19,7 @@ namespace SportEventsApp.Controllers.Admin
             _context = new ApplicationDbContext();
         }
         // GET: Events
+   
         public ActionResult Index()
         {
             var events = _context.Events.ToList();

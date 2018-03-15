@@ -103,5 +103,6 @@ C:\Users\Zima\Documents\Visual Studio 2015\Projects\SportEventsApp\SportEventsAp
 C:\Users\Zima\Documents\Visual Studio 2015\Projects\SportEventsApp\SportEventsApp\obj\Release\SportEventsApp.dll
 C:\Users\Zima\Documents\Visual Studio 2015\Projects\SportEventsApp\SportEventsApp\obj\Release\SportEventsApp.pdb
 C:\Users\Zima\Documents\Visual Studio 2015\Projects\SportEventsApp\SportEventsApp\obj\Release\SportEventsApp.csprojResolveAssemblyReference.cache
-C:\Users\Zima\Documents\Visual Studio 2015\Projects\SportEventsApp\SportEventsApp\obj\Release\SportEventsApp.Migrations.foo.resources
 C:\Users\Zima\Documents\Visual Studio 2015\Projects\SportEventsApp\SportEventsApp\obj\Release\SportEventsApp.Migrations.AddCashNumberToUserModel.resources
+C:\Users\Zima\Documents\Visual Studio 2015\Projects\SportEventsApp\SportEventsApp\obj\Release\SportEventsApp.Migrations.FixCascadeDelete.resources
+C:\Users\Zima\Documents\Visual Studio 2015\Projects\SportEventsApp\SportEventsApp\obj\Release\SportEventsApp.Migrations.LastMigration.resources

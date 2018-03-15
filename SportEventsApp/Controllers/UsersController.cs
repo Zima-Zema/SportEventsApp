@@ -52,7 +52,7 @@ namespace SportEventsApp.Controllers
                 return BadRequest();
             }
             var users = db.EUsers.Include(u => u.Group).Include(us => us.Event).Where(g => g.Group_ID == id).ToList();
-            if (users == null || users.Count == 0) 
+            if (users == null) 
             {
                 return NotFound();
             }

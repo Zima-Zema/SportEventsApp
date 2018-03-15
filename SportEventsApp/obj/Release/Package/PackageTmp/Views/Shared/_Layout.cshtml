@@ -16,13 +16,33 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Fantasista", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, null)</li>
-                    <li>@Html.ActionLink("API", "Index", "Help", new { area = "" }, null)</li>
+                    @if (Request.IsAuthenticated) { 
+                    <li>@Html.ActionLink("Events", "Index", "Events", new { area = "" }, null)</li>
+                    <li>@Html.ActionLink("Users", "Index", "Users", new { area = "" }, null)</li>
+                    
+                    <li class="dropdown">
+                        <a  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Groups <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("All Groups", "Index", "Groups", new { area = "" }, null)</li>
+                         
+                        </ul>
+                    </li>
+
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Cashs<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("Etisalat Cash", "Index", "EtisalatCashes", new { area = "" }, null)</li>
+                            <li>@Html.ActionLink("Vodafone Cash", "Index", "VodafoneCashes", new { area = "" }, null)</li>
+                        </ul>
+                    </li>
+                    }
                 </ul>
+                @Html.Partial("_LoginPartial")
             </div>
         </div>
     </div>
@@ -30,12 +50,11 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; @DateTime.Now.Year - Fantasista</p>
         </footer>
     </div>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/lib")
     @RenderSection("scripts", required: false)
 </body>
 </html>

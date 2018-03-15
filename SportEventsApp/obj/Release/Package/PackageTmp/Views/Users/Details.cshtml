@@ -1,0 +1,28 @@
+﻿@model SportEventsApp.Models.User
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@Model.UserName</h2>
+
+<ul>
+    <li>User Name: @Model.UserName</li>
+    <li>Mobile: @Model.Mobile</li>
+    @if (Model.Status == true)
+    {
+        <li>Status: Varified </li>
+    }
+    else
+    {
+        <li>Status: Unverified </li>
+    }
+
+
+    <li>Event: @Model.Event.Name</li>
+    <li>Group: @Model.Group.Name</li>
+</ul>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
