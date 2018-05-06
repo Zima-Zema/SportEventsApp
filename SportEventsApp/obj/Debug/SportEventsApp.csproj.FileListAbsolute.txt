@@ -107,3 +107,4 @@ C:\Users\Zima\Documents\Visual Studio 2015\Projects\SportEventsApp\SportEventsAp
 C:\Users\Zima\Documents\Visual Studio 2015\Projects\SportEventsApp\SportEventsApp\obj\Debug\SportEventsApp.Migrations.FixCascadeDelete.resources
 C:\Users\Zima\Documents\Visual Studio 2015\Projects\SportEventsApp\SportEventsApp\obj\Debug\SportEventsApp.csprojResolveAssemblyReference.cache
 C:\Users\Zima\Documents\Visual Studio 2015\Projects\SportEventsApp\SportEventsApp\obj\Debug\SportEventsApp.Migrations.LastMigration.resources
+C:\Users\Zima\documents\visual studio 2015\Projects\SportEventsApp\SportEventsApp\obj\Debug\SportEventsApp.Migrations.foo.resources
