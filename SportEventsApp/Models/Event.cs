@@ -11,7 +11,7 @@ namespace SportEventsApp.Models
     {
         public Event()
         {
-            Users = new List<User>();
+            EventUsers = new List<EventUsers>();
             Groups = new List<Group>();
             VodafoneCashNumbers = new List<VodafoneCash>();
             EtisalatCashNumbers = new List<EtisalatCash>();
@@ -33,10 +33,15 @@ namespace SportEventsApp.Models
         [Display(Name = "Third Host")]
         public string Host_3 { get; set; }
 
-        public DateTime Date { get; set; }
-        public TimeSpan Time { get; set; }
+        public DateTime? Start { get; set; }
+        public DateTime? End { get; set; }
+        public TimeSpan? From { get; set; }
+        public TimeSpan? To { get; set; }
+        public bool? Published { get; set; }
+
         [Display(Name = "Entry Fees")]
         public int Entry_Fees { get; set; }
+        [Display(Name = "Number Of Player")]
         public int No_Of_Players { get; set; }
         [Required]
         public string Type { get; set; }
@@ -48,14 +53,19 @@ namespace SportEventsApp.Models
         [Display(Name = "Location URL")]
         public string Location_URL { get; set; }
 
-        [InverseProperty("Event")]
-        public virtual List<User> Users { get; set; }
+        public virtual List<EventUsers> EventUsers { get; set; }
+
+
+
+        [ForeignKey("Store")]
+        [Display(Name = "Store")]
+        public int? StoreId { get; set; }
+        public virtual Store Store { get; set; }
 
 
         [InverseProperty("Event")]
         public virtual List<Group> Groups { get; set; }
-
-
+        
         [InverseProperty("Event")]
         public virtual List<VodafoneCash> VodafoneCashNumbers { get; set; }
 

@@ -63,8 +63,8 @@ namespace SportEventsApp.Controllers.Admin
                 @event.Host_1 = model.Host_1;
                 @event.Host_2 = model.Host_2;
                 @event.Host_3 = model.Host_3;
-                @event.Date = model.Date.Date;
-                @event.Time = model.Time;
+                //@event.Date = model.Date.Date;
+                //@event.Time = model.Time;
                 @event.Entry_Fees = model.Entry_Fees;
                 @event.No_Of_Players = model.No_Of_Players;
                 @event.Type = model.Type;
@@ -103,8 +103,8 @@ namespace SportEventsApp.Controllers.Admin
                 dbevent.Host_1 = model.Host_1;
                 dbevent.Host_2 = model.Host_2;
                 dbevent.Host_3 = model.Host_3;
-                dbevent.Date = model.Date.Date;
-                dbevent.Time = model.Time;
+                //dbevent.Date = model.Date.Date;
+                //dbevent.Time = model.Time;
                 dbevent.Entry_Fees = model.Entry_Fees;
                 dbevent.No_Of_Players = model.No_Of_Players;
                 dbevent.Type = model.Type;
@@ -171,8 +171,8 @@ namespace SportEventsApp.Controllers.Admin
                 Host_1 = model.Host_1,
                 Host_2 = model.Host_2,
                 Host_3 = model.Host_3,
-                Date = model.Date.Date,
-                Time = model.Time,
+                //Date = model.Date.Date,
+                //Time = model.Time,
                 Entry_Fees = model.Entry_Fees,
                 No_Of_Players = model.No_Of_Players,
                 Type = model.Type,

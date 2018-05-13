@@ -52,14 +52,14 @@ namespace SportEventsApp.Controllers
         /// </summary>
         /// <param name="userId">The ID of the User.</param>
         [Route("api/UserGroup/{userId}")]
-        public IHttpActionResult GetGroupByUserId(int userId)
+        public IHttpActionResult GetGroupByUserId(string userId)
         {
-            var isExsist = db.EUsers.Count(e => e.Id == userId) > 0;
+            var isExsist = db.Users.Count(e => e.Id == userId) > 0;
             if (isExsist == false)
             {
                 return BadRequest();
             }
-            Group group = db.EUsers.SingleOrDefault(uu => uu.Id == userId).Group;
+            Group group = db.Users.SingleOrDefault(uu => uu.Id == userId).Group;
             if (group == null)
             {
                 return NotFound();

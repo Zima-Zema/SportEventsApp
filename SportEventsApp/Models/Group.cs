@@ -11,13 +11,13 @@ namespace SportEventsApp.Models
     {
         public Group()
         {
-            Users = new List<User>();
+            Users = new List<ApplicationUser>();
         }
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
         [InverseProperty("Group")]
-        public virtual List<User> Users { get; set; }
+        public virtual List<ApplicationUser> Users { get; set; }
 
         [ForeignKey("Event")][Required][Display(Name ="Event")]
         public int? Event_ID { get; set; }

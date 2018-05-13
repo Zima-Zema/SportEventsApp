@@ -8,6 +8,8 @@ namespace SportEventsApp
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new HandleErrorAttribute());
+            //bearer
+            //filters.Add(new AuthorizeAttribute());
         }
     }
 }

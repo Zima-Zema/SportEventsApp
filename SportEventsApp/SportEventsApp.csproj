@@ -34,7 +34,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>App_Data/XmlDocument.xml</DocumentationFile>
+    <DocumentationFile>bin\SportEventsApp.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -78,6 +78,18 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Owin, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.3.1.0\lib\net45\Microsoft.Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Cors, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Cors.3.1.0\lib\net45\Microsoft.Owin.Cors.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.3.1.0\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -177,12 +189,6 @@
     <Reference Include="Owin">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Owin">
-      <HintPath>..\packages\Microsoft.Owin.3.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Owin.Host.SystemWeb">
-      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.3.0.1\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Owin.Security">
       <HintPath>..\packages\Microsoft.Owin.Security.3.0.1\lib\net45\Microsoft.Owin.Security.dll</HintPath>
     </Reference>
@@ -209,6 +215,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApplicationOAuthProvider.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -319,14 +326,40 @@
     <Compile Include="Migrations\201805062114221_foo.Designer.cs">
       <DependentUpon>201805062114221_foo.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201805121552545_EditApplicationUser.cs" />
+    <Compile Include="Migrations\201805121552545_EditApplicationUser.Designer.cs">
+      <DependentUpon>201805121552545_EditApplicationUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805121619148_AddMatchAndEntryFeesModels.cs" />
+    <Compile Include="Migrations\201805121619148_AddMatchAndEntryFeesModels.Designer.cs">
+      <DependentUpon>201805121619148_AddMatchAndEntryFeesModels.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805131423275_FinishStoreAndRelations.cs" />
+    <Compile Include="Migrations\201805131423275_FinishStoreAndRelations.Designer.cs">
+      <DependentUpon>201805131423275_FinishStoreAndRelations.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805131525386_removeRelationBetweenUserStore.cs" />
+    <Compile Include="Migrations\201805131525386_removeRelationBetweenUserStore.Designer.cs">
+      <DependentUpon>201805131525386_removeRelationBetweenUserStore.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805131530117_FixRelationUserStore.cs" />
+    <Compile Include="Migrations\201805131530117_FixRelationUserStore.Designer.cs">
+      <DependentUpon>201805131530117_FixRelationUserStore.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\City.cs" />
+    <Compile Include="Models\EntryFees.cs" />
     <Compile Include="Models\EtisalatCash.cs" />
     <Compile Include="Models\Event.cs" />
+    <Compile Include="Models\EventUsers.cs" />
     <Compile Include="Models\Group.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\Match.cs" />
+    <Compile Include="Models\Store.cs" />
+    <Compile Include="Models\StorePhotos.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\VodafoneCash.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -763,6 +796,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201805062114221_foo.resx">
       <DependentUpon>201805062114221_foo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805121552545_EditApplicationUser.resx">
+      <DependentUpon>201805121552545_EditApplicationUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805121619148_AddMatchAndEntryFeesModels.resx">
+      <DependentUpon>201805121619148_AddMatchAndEntryFeesModels.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805131423275_FinishStoreAndRelations.resx">
+      <DependentUpon>201805131423275_FinishStoreAndRelations.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805131525386_removeRelationBetweenUserStore.resx">
+      <DependentUpon>201805131525386_removeRelationBetweenUserStore.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805131530117_FixRelationUserStore.resx">
+      <DependentUpon>201805131530117_FixRelationUserStore.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
