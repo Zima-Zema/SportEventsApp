@@ -8,6 +8,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security.OAuth;
 using Microsoft.Owin.Cors;
+using SportEventsApp.Providers;
 
 [assembly: OwinStartup(typeof(SportEventsApp.Startup))]
 
@@ -18,18 +19,9 @@ namespace SportEventsApp
         public void Configuration(IAppBuilder app)
         {
             
-            app.UseCors(CorsOptions.AllowAll);
-            OAuthAuthorizationServerOptions option = new OAuthAuthorizationServerOptions
-            {
-                TokenEndpointPath = new PathString("/token"),
-                Provider = new ApplicationOAuthProvider(),
-                AccessTokenExpireTimeSpan = TimeSpan.FromDays(90),
-                AllowInsecureHttp = true
-            };
-            app.UseOAuthAuthorizationServer(option);
-            app.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions());
-
+            
             ConfigureAuth(app);
+            
             createRolesandUsers();
         }
 
@@ -53,7 +45,9 @@ namespace SportEventsApp
                 //Here we create a Admin super user who will maintain the website				
                 var user = new ApplicationUser();
                 user.UserName = "mamdouh";
+                user.Name = "mamdouh";
                 user.Email = "mamdouhahmed633@yahoo.com";
+                user.Mobile = "01013062882";
                 string userPWD = "A7Ayash3b56789";
                 var chkUser = UserManager.Create(user, userPWD);
 
@@ -63,6 +57,28 @@ namespace SportEventsApp
                     var result1 = UserManager.AddToRole(user.Id, "Admin");
                 }
             }
+            else
+            {
+                var dbuser =  UserManager.FindByName("mamdouh");
+                if (dbuser==null)
+                {
+                    //Here we create a Admin super user who will maintain the website				
+                    var user = new ApplicationUser();
+                    user.UserName = "mamdouh";
+                    user.Name = "mamdouh";
+                    user.Email = "mamdouhahmed633@yahoo.com";
+                    user.Mobile = "01013062882";
+                    string userPWD = "A7Ayash3b56789";
+                    var chkUser = UserManager.Create(user, userPWD);
+
+                    //Add default User to Role Admin
+                    if (chkUser.Succeeded)
+                    {
+                        var result1 = UserManager.AddToRole(user.Id, "Admin");
+                    }
+                    context.SaveChanges();
+                }
+            }
             if (!roleManager.RoleExists("Player"))
             {
                 var role = new Microsoft.AspNet.Identity.EntityFramework.IdentityRole();
@@ -70,10 +86,10 @@ namespace SportEventsApp
                 roleManager.Create(role);
             }
 
-            if (!roleManager.RoleExists("StoreManager"))
+            if (!roleManager.RoleExists("StoreOwner"))
             {
                 var role = new Microsoft.AspNet.Identity.EntityFramework.IdentityRole();
-                role.Name = "StoreManager";
+                role.Name = "StoreOwner";
                 roleManager.Create(role);
             }
 

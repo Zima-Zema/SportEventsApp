@@ -17,18 +17,24 @@ namespace SportEventsApp.Models
         }
         [Key]
         public int Id { get; set; }
+        [Required]
         [Display(Name ="Name")]
         public string StoreName { get; set; }
+        [Required]
         public string Address { get; set; }
         [Display(Name ="Number Of Devices")]
         public int? NumberOfDevices { get; set; }
         public double? HoureFees { get; set; }
-        public int WorkingHours { get; set; }
-        public TimeSpan OpenTime { get; set; }
-        public TimeSpan CloseTime { get; set; }
+        public TimeSpan WorkingHours { get; set; }
+        [Required]
+        public string OpenTime { get; set; }
+        [Required]
+        public string CloseTime { get; set; }
+        [Required]
         public DayOfWeek From { get; set; }
+        [Required]
         public DayOfWeek To { get; set; }
-        public bool? Approved { get; set; }
+        public bool? Approved { get; set; } = true;
 
         [ForeignKey("City")]
         [Required]
@@ -42,7 +48,6 @@ namespace SportEventsApp.Models
         [InverseProperty("Store")]
         public virtual List<Match> Matches { get; set; }
 
-        [InverseProperty("Store")]
         public virtual List<Event> Events { get; set; }
         [ForeignKey("Owner")]
         [Display(Name = "Owner")]

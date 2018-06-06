@@ -1,0 +1,75 @@
+﻿@model SportEventsApp.ViewModel.RegularInfoViewModel
+@{
+    ViewBag.Title = "New";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (Model.Id > 0)
+{
+    <h2>Edit Simple Info</h2>
+}
+else
+{
+    <h2>New Simple Info</h2>
+}
+
+
+@using (Html.BeginForm("Save", "Info", FormMethod.Post))
+{
+    @Html.ValidationSummary(true, "Invalid Data")
+    <div class="row">
+        <div class="form-group">
+            @Html.LabelFor(m => m.Title)
+            @Html.TextBoxFor(m => m.Title, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Title)
+            @Html.ValidationMessageFor(m => m.Points)
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group">
+            <label for="ComplexId">Add To Complex</label>
+            @Html.DropDownListFor(cc=>cc.ComplexId,new SelectList(ViewBag.complex, "Id", "Header"), "Select Complex List", new { @class = "form-control"})
+            
+        </div>
+    </div>
+    <div class="row">
+        <div id="pointsDiv" class="col-md-6 ">
+            <h3>@Html.LabelFor(m => m.Points)</h3>
+            
+            <input type="button" value="Add" id="btnPoints" class="btn btn-primary cash-btn" />
+            <br />
+            @for (int i = 0; i < Model.Points.Count; i++)
+            {
+                <div class="form-group">
+                    <input type="text" name="Points"  class="form-control" value="@Model.Points[i]" />
+                    
+                </div>
+            }
+        </div>
+
+    </div>
+
+    @Html.HiddenFor(m => m.Id)
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <div class="form-group col-md-6">
+            @Html.ActionLink("Back", "Index", null, new { @class = "btn btn-default col-md-6" })
+        </div>
+        <div class="form-group col-md-6">
+            <input type="submit" value="Save" class="btn btn-success col-md-6" />
+        </div>
+    </div>
+}
+
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(function () {
+            $("#btnPoints").on("click", function () {
+                $("#pointsDiv").append('<div class="form-group"><input type="text" name="Points" class="form-control" value="" />@Html.ValidationMessageFor(m => m.Points)</div>')
+            });
+
+        })
+    </script>
+}

@@ -1,0 +1,22 @@
+﻿@model SportEventsApp.Models.NestedInfo
+@{
+    ViewBag.Title = "DetailsNested";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@Model.Header</h2>
+<div class="simple_list">
+    @foreach (var item in Model.InfoList)
+    {
+        <h3>@item.Title</h3>
+        <div class="points">
+            <ul class="list-group">
+                @foreach (var point in item.Points)
+                {
+                    <li class="list-group-item">@point.Value</li>
+                }
+            </ul>
+        </div>
+    }
+</div>
+

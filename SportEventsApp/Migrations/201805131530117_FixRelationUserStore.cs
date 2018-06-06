@@ -8,8 +8,8 @@ namespace SportEventsApp.Migrations
         public override void Up()
         {
             //AddColumn("dbo.Stores", "OwnerId", c => c.String(maxLength: 128));
-            CreateIndex("dbo.Stores", "OwnerId");
-            AddForeignKey("dbo.Stores", "OwnerId", "dbo.AspNetUsers", "Id");
+            //CreateIndex("dbo.Stores", "OwnerId");
+            //AddForeignKey("dbo.Stores", "OwnerId", "dbo.AspNetUsers", "Id");
         }
         
         public override void Down()

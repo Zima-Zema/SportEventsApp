@@ -1,0 +1,194 @@
+﻿@model SportEventsApp.ViewModel.ComplexInfoViewModel
+@{
+    ViewBag.Title = "NewNested";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .NewPartial {
+        margin-bottom: 10px;
+    }
+</style>
+@if (Model.Id > 0)
+{
+    <h2>Edit Complex Info</h2>
+}
+else
+{
+    <h2>New Complex Info</h2>
+}
+
+
+@using (Html.BeginForm("SaveNested", "Info", FormMethod.Post))
+{
+    @Html.ValidationSummary(true, "Invalid Data")
+    <div class="row">
+        <div class="form-group">
+            @Html.LabelFor(m => m.Header)
+            @Html.TextBoxFor(m => m.Header, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Header)
+            @Html.ValidationMessageFor(m => m.Titles)
+        </div>
+    </div>
+
+    <div class="row">
+        <div id="titlesDiv" class="col-md-6 ">
+            <h3>@Html.LabelFor(m => m.Titles)</h3>
+
+
+            @Ajax.ActionLink("Add Simple Info", "NewPartial", "Info", null, new AjaxOptions()
+       {
+           UpdateTargetId = "myModalBody",
+           InsertionMode = InsertionMode.Replace,
+           HttpMethod = "Get",
+           OnSuccess = "toggleModal()"
+
+       }, new { @class = "btn btn-primary NewPartial" })
+
+            <br />
+            @for (int i = 0; i < Model.RegularInfo.Count; i++)
+            {
+                <div class="form-group">
+                    @Ajax.ActionLink(Model.RegularInfo[i].Title, "EditPartial", "Info", new { id = Model.RegularInfo[i].Id }, new AjaxOptions()
+               {
+                   UpdateTargetId = "myModalBody",
+                   InsertionMode = InsertionMode.Replace,
+                   HttpMethod = "Get",
+                   OnSuccess = "toggleModal()"
+
+               }, new { @id = Model.RegularInfo[i].Id })
+
+                    <input type="hidden"  name="Titles" class="form-control @Model.RegularId[i]" value="@Model.Titles[i]" />
+                    <input type="hidden" name="RegularId" class="form-control @Model.RegularId[i]" value="@Model.RegularId[i]" />
+
+                </div>
+            }
+        </div>
+
+    </div>
+
+    @Html.HiddenFor(m => m.Id)
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <div class="form-group col-md-6">
+            @Html.ActionLink("Back", "Index", null, new { @class = "btn btn-default col-md-6" })
+        </div>
+        <div class="form-group col-md-6">
+            <input type="submit" value="Save" class="btn btn-success col-md-6" />
+        </div>
+    </div>
+}
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Simple Info</h4>
+            </div>
+            <div id="myModalBody" class="modal-body">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+
+
+        function toggleModal() {
+            $("#myModal").modal("show");
+        }
+        $(function () {
+
+
+            $("#myModal").on("click", "#btnPoints", function (e) {
+                console.log("Add Points");
+                $("#pointsDiv").append('<div class="form-group"><input type="text" name="Points" class="form-control" value="" /></div>')
+
+            })
+
+            $("#myModal").on("click", "#btnPointsBack", function (e) {
+                $('#myModal').modal('toggle');
+            })
+
+            $("#myModal").on("submit", "#form-simpleInfo", function (e) {
+                e.preventDefault();  // prevent standard form submission
+                console.log("form-simpleInfo submit")
+                var form = $(this);
+                $.ajax({
+                    url: form.attr("action"),
+                    method: form.attr("method"),  // post
+                    data: form.serialize(),
+                    success: function (partialResult) {
+                        var dropValue = $("#drop" + partialResult.id).val();
+
+
+                        console.log("dropValue", dropValue);
+                        console.log("length", $("#drop" + partialResult.id).length)
+                        console.log("res", partialResult)
+
+
+                        if (!($("#drop" + partialResult.id).length) || dropValue) {
+
+                            if ($("#" + partialResult.id).length) {
+                                console.log("Edit Info")
+                                $("#" + partialResult.id).text(partialResult.title);
+                            } else {
+                                console.log("New Info")
+                                $("#titlesDiv").append('<div class="form-group">' +
+                                    '<a data-ajax="true" id="' + partialResult.id + '" data-ajax-method="Get" data-ajax-mode="replace" data-ajax-success="toggleModal()" data-ajax-update="#myModalBody" href="/Info/EditPartial/' + partialResult.id + '">' + partialResult.title + '</a>' +
+                                    '<input type="hidden" class="' + partialResult.id + '" name="Titles"  value="' + partialResult.title + '">' +
+                                    '<input type="hidden" class="' + partialResult.id + '" name="RegularId"  value="' + partialResult.id + '">' +
+                                    '</div>');
+                            }
+                        } else {
+                            $("#" + partialResult.id).remove();
+                            $("." + partialResult.id).remove();
+                            $('#myModal').modal('hide');
+                        }
+
+
+
+
+
+                        $('#myModal').modal('hide');
+                    },
+                    error: function (err) {
+
+                        console.log("err", err.statusText)
+                        $("#validationSpan").text(err.statusText);
+                    }
+                });
+            });
+
+            $("#myModal").on("click", ".js-delete", function (e) {
+                e.preventDefault();
+                var delbutton = $(this);
+
+                bootbox.confirm("Are You Sure To Delete This Info?!", function (result) {
+                    $.ajax({
+                        url: "/api/DeleteInfo/" + delbutton.attr("data-info-id"),
+                        method: "DELETE",
+                        success: function () {
+                            $("#" + delbutton.attr("data-info-id")).remove();
+                            $("." + delbutton.attr("data-info-id")).remove();
+                            $('#myModal').modal('hide');
+                        },
+                        error: function () {
+
+                        }
+
+
+                    });
+
+                })
+
+
+            })
+        })
+    </script>
+}

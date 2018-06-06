@@ -152,15 +152,20 @@ namespace SportEventsApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.UserName };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     //temp
-                    //var roleStore = new RoleStore<IdentityRole>(new ApplicationDbContext());
-                    //var roleManager = new RoleManager<IdentityRole>(roleStore);
-                    //await roleStore.CreateAsync(new IdentityRole("CanManageMovie"));
-                    //await UserManager.AddToRoleAsync(user.Id, "CanManageMovie");
+                    var roleStore = new RoleStore<IdentityRole>(new ApplicationDbContext());
+                    var roleManager = new RoleManager<IdentityRole>(roleStore);
+                    if (!roleManager.RoleExists(model.Role))
+                    {
+                        var role = new Microsoft.AspNet.Identity.EntityFramework.IdentityRole();
+                        role.Name = model.Role;
+                        roleManager.Create(role);
+                    }
+                    await UserManager.AddToRoleAsync(user.Id, model.Role);
 
 
 

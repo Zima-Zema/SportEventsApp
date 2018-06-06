@@ -1,0 +1,104 @@
+﻿@model IEnumerable<SportEventsApp.ViewModel.MatchesIndex>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Matches</h2>
+
+<p>
+    @Html.ActionLink("Create New", "New", null, new { @class = "btn btn-primary" })
+</p>
+
+<table id="events" class="table table-hover table-bordered">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatorName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CityName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Time)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatorUserName)
+            </th>
+            <th>Operation</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+
+</table>
+
+
+@section scripts{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js" type="text/javascript"></script>
+    <script>
+        $(document).ready(function () {
+            var table = $("#events").DataTable({
+                ajax: {
+                    url: "/api/GetMatchesAdmin",
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "creatorName",
+                    },
+                    {
+                        data: "cityName",
+                    },
+                    {
+                        data: "date",
+                        render: function (d) {
+                            return moment(d).format("l");
+                        }
+                    },
+                    {
+                        data: "time"
+                    },
+                    {
+                        data: "creatorUserName",
+
+                    },
+                    {
+                        data: "id",
+                        render: function (data) {
+                            return "<button class='btn btn-danger btn-xs js-delete' data-match-id=" + data + ">Delete</button>|<a class='btn btn-primary btn-xs' href='/Matches/Edit/" + data + "'>Edit</a>|<a class='btn btn-primary btn-xs' href='/Matches/Details/" + data + "'>Details</a>";
+                        }
+                    }
+                ]
+            });
+
+            $("#events").on("click", ".js-delete", function () {
+                var delbutton = $(this);
+                bootbox.confirm("Are You Sure To Delete This Match?!", function (result) {
+                    if (result) {
+                        $.ajax({
+                            url: "/api/Matches/" + delbutton.attr("data-match-id"),
+                            method: "DELETE",
+                            success: function () {
+                                table.row(delbutton.parents("tr")).remove().draw();
+                            },
+                            error: function () {
+
+                            }
+
+
+                        });
+
+                    }
+
+
+                })
+
+            });
+
+        });
+
+    </script>
+
+}

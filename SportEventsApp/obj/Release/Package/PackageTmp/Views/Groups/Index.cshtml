@@ -37,7 +37,7 @@
         $(document).ready(function () {
             var table = $("#groups").DataTable({
                 ajax: {
-                    url: "/api/Groups",
+                    url: "/api/GetGroupsAdmin",
                     dataSrc: ""
                 },
                 columns: [
@@ -48,13 +48,11 @@
                         }
                     },
                     {
-                        data: "users",
-                        render: function (u) {
-                            return u.length
-                        }
+                        data: "count",
+
                     },
                     {
-                        data: "event.name",
+                        data: "eventName",
                         render: function (u) {
                             return u ? u : 'N/A'
                         }

@@ -15,9 +15,16 @@ namespace SportEventsApp.Models
         }
         public int Id { get; set; }
         public DateTime Date { get; set; }
-        public int? Type { get; set; }
+        public TimeSpan Time { get; set; }
+        public string Type { get; set; }
         public int? NofSlots { get; set; }
-        public double Price { get; set; }
+        public double Prize { get; set; }
+
+        [ForeignKey("Creator")]
+        [Display(Name = "Creator")]
+        public string CreatorId { get; set; }
+        public virtual ApplicationUser Creator { get; set; }
+
 
         public virtual List<ApplicationUser> Users { get; set; }
 

@@ -16,15 +16,21 @@
             <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Start)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.End)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.From)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.To)
+            </th>
 
             <th>
-                @Html.DisplayNameFor(model => model.Host_1)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Date)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Time)
+                @Html.DisplayNameFor(model => model.Published)
             </th>
             <th>Operation</th>
         </tr>
@@ -40,7 +46,7 @@
         $(document).ready(function () {
             var table = $("#events").DataTable({
                 ajax: {
-                    url: "/api/Events",
+                    url: "/api/GetEventsAdmin",
                     dataSrc: ""
                 },
                 columns: [
@@ -51,17 +57,35 @@
                         }
                     },
                     {
-                        data: "host_1"
-                    },
-                    {
-                        data: "date",
+                        data: "start",
                         render: function (d) {
                             return moment(d).format("l");
                         }
                     },
                     {
-                        data: "time"
-                        
+                        data: "end",
+                        render: function (d) {
+                            return moment(d).format("l");
+                        }
+                    },
+                    {
+                        data: "from"
+                    },
+                    {
+                        data: "to"
+                        //render: function (d) {
+                        //    console.log(d)
+                        //    return moment.unix(d).format('LT');
+                        //}
+
+                    },
+                    {
+                        data: "published",
+                        render: function (s) {
+                            
+                            return s == true ? "Published" : "Hidden"
+                        }
+
                     },
                     {
                         data: "id",

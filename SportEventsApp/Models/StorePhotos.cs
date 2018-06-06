@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -16,6 +17,7 @@ namespace SportEventsApp.Models
         [Required]
         [Display(Name = "Store")]
         public int? StoreId { get; set; }
+        [JsonIgnore]
         public virtual Store Store { get; set; }
     }
 }

@@ -523,5 +523,11 @@
             </summary>
             <param name="id">The ID of the Group.</param>
         </member>
+        <member name="M:SportEventsApp.Controllers.UsersController.GetUserByGroupId(System.Int32)">
+            <summary>
+            Get Users Data by GroupID.
+            </summary>
+            <param name="id">The ID of the Group.</param>
+        </member>
     </members>
 </doc>

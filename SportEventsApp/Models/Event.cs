@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -13,6 +14,7 @@ namespace SportEventsApp.Models
         {
             EventUsers = new List<EventUsers>();
             Groups = new List<Group>();
+            Stores = new List<Store>();
             VodafoneCashNumbers = new List<VodafoneCash>();
             EtisalatCashNumbers = new List<EtisalatCash>();
         }
@@ -25,14 +27,8 @@ namespace SportEventsApp.Models
         public int Prize_2 { get; set; }
         [Display(Name = "Third Prize")]
         public int Prize_3 { get; set; }
-        [Required]
-        [Display(Name = "First Host")]
-        public string Host_1 { get; set; }
-        [Display(Name = "Second Host")]
-        public string Host_2 { get; set; }
-        [Display(Name = "Third Host")]
-        public string Host_3 { get; set; }
-
+        
+        public bool Full { get; set; } = false;
         public DateTime? Start { get; set; }
         public DateTime? End { get; set; }
         public TimeSpan? From { get; set; }
@@ -46,30 +42,23 @@ namespace SportEventsApp.Models
         [Required]
         public string Type { get; set; }
         [Display(Name = "Match Duration")]
-        public int Match_Duration { get; set; }
-        [Required]
-        public string Address { get; set; }
-        [Required]
+        public int MatchDuration { get; set; }
         [Display(Name = "Location URL")]
         public string Location_URL { get; set; }
-
+        [JsonIgnore]
         public virtual List<EventUsers> EventUsers { get; set; }
 
-
-
-        [ForeignKey("Store")]
-        [Display(Name = "Store")]
-        public int? StoreId { get; set; }
-        public virtual Store Store { get; set; }
-
+        public virtual List<Store> Stores { get; set; }
 
         [InverseProperty("Event")]
+        [JsonIgnore]
         public virtual List<Group> Groups { get; set; }
         
         [InverseProperty("Event")]
+        [JsonIgnore]
         public virtual List<VodafoneCash> VodafoneCashNumbers { get; set; }
 
-        [InverseProperty("Event")]
+        [InverseProperty("Event")][JsonIgnore]
         public virtual List<EtisalatCash> EtisalatCashNumbers { get; set; }
     }
 }
