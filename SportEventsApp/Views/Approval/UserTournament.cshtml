@@ -1,0 +1,124 @@
+﻿@model IEnumerable<SportEventsApp.ViewModel.UserTournamentViewModel>
+
+@{
+    ViewBag.Title = "UserTournament";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    /* Add a right margin to each icon */
+    .fa {
+        margin-left: -12px;
+        margin-right: 8px;
+    }
+</style>
+<h2>User Tournament</h2>
+
+<table id="user-tournament" class="table table-hover table-bordered">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.User.Mobile)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Event.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Groups)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CashNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>Operation</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.User.Mobile</td>
+                <td>@item.Event.Name</td>
+                <td>
+                    @Html.DropDownListFor(m => m.SingleOrDefault(vv=>vv.EventId==item.EventId && vv.UserId == item.UserId).Group.Id, new SelectList(item.Groups, "Id", "Name",item.GroupId), "Select Group", new { @class = "form-control", @id= item.UserId +"_"+item.EventId })
+                </td>
+                <td>@item.CashNumber</td>
+
+                <td>
+                    @Html.DropDownListFor(m => m.SingleOrDefault(vv => vv.EventId == item.EventId && vv.UserId == item.UserId).Status, new SelectList(new[] { new { Value = "true", Text = "Verified" }, new { Value = "false", Text = "Unverified" }, }, "Value", "Text",item.Status), new { @class = "form-control", @id = item.UserId + "status_" + item.EventId })
+                </td>
+
+                <td>
+                    <button class="btn btn-default js-varify" data-eventId="@item.EventId" data-userId="@item.UserId">
+                        <i id="icon_@item.UserId@item.EventId" class=""></i> Save Changes
+                    </button>
+                </td>
+
+            </tr>
+         }
+
+    </tbody>
+
+</table>
+
+@section scripts{
+
+    <script>
+        $(document).ready(function () {
+
+            $("#user-tournament").on("click", ".js-varify", function () {
+                var varbutton = $(this);
+                var userId = varbutton.attr("data-userId");
+                var eventId = varbutton.attr("data-eventId");
+                var selectedGroup = $("#" + userId + "_" + eventId).val();
+                var selectedStatus = $("#" + userId + "status_" + eventId).val();
+                console.log("EventID", eventId);
+                console.log("UserID", userId)
+                
+                console.log("selectedGroup", selectedGroup);
+                console.log("selectedStatus", selectedStatus);
+                $("#icon_" + userId + eventId).addClass("fa fa-spinner fa-spin");
+                
+                var modelObj = {
+                    UserId: userId,
+                    EventId: eventId,
+                    GroupId: selectedGroup,
+                    Status: selectedStatus
+                };
+                $.ajax({
+                    url: "/api/VerifyUserEvent",
+                    method: "POST",
+                    data:modelObj,
+                    success: function (res) {
+                        console.log(res)
+                        $("#icon_" + userId + eventId).removeClass("fa fa-spinner fa-spin");
+                        //if (res.status) {
+                        //    varbutton.removeClass("btn-default");
+                        //    varbutton.addClass("btn-success");
+                        //    $("#span_" + userId + eventId).text("UnVerify");
+                        //    $("#status_" + userId + eventId).text("Verified");
+                        //} else {
+                        //    varbutton.removeClass("btn-success");
+                        //    varbutton.addClass("btn-default");
+                        //    $("#span_" + userId + eventId).text("Verify");
+                        //    $("#status_" + userId + eventId).text("UnVerified");
+                        //}
+
+                    },
+                    error: function () {
+
+                    }
+
+
+                });
+
+
+            });
+
+        });
+
+    </script>
+}

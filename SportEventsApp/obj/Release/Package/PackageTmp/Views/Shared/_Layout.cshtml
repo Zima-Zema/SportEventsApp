@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+﻿@*<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -6,6 +6,7 @@
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -20,11 +21,11 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, null)</li>
                     @if (Request.IsAuthenticated) { 
                     <li>@Html.ActionLink("Events", "Index", "Events", new { area = "" }, null)</li>
                     <li>@Html.ActionLink("Users", "Index", "Users", new { area = "" }, null)</li>
-                    
+                    <li>@Html.ActionLink("Matches", "Index", "Matches", new { area = "" }, null)</li>
+                    <li>@Html.ActionLink("Infos", "Index", "Info", new { area = "" }, null)</li>
                     <li class="dropdown">
                         <a  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Groups <span class="caret"></span></a>
                         <ul class="dropdown-menu">
@@ -38,6 +39,14 @@
                         <ul class="dropdown-menu">
                             <li>@Html.ActionLink("Etisalat Cash", "Index", "EtisalatCashes", new { area = "" }, null)</li>
                             <li>@Html.ActionLink("Vodafone Cash", "Index", "VodafoneCashes", new { area = "" }, null)</li>
+                        </ul>
+                    </li>
+
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Approval<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("User To Tournament", "UserTournament", "Approval", new { area = "" }, null)</li>
+                      
                         </ul>
                     </li>
                     }
@@ -56,5 +65,126 @@
 
     @Scripts.Render("~/bundles/lib")
     @RenderSection("scripts", required: false)
+</body>
+</html>*@
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+
+
+
+    <div class="wrapper">
+        <!-- Sidebar Holder -->
+@if (Request.IsAuthenticated)
+{
+        <nav id="sidebar">
+            <div class="sidebar-header">
+                <h3>Fantasista</h3>
+            </div>
+
+            <ul class="list-unstyled components">
+                <li class="">
+                    @Html.ActionLink("Fantasista", "Index", "Home", new { area = "" },null)
+                </li>
+                <li>@Html.ActionLink("Events", "Index", "Events", new { area = "" }, null)</li>
+                <li>@Html.ActionLink("Users", "Index", "Users", new { area = "" }, null)</li>
+                <li>@Html.ActionLink("Groups", "Index", "Groups", new { area = "" }, null)</li>
+                <li>@Html.ActionLink("Matches", "Index", "Matches", new { area = "" }, null)</li>
+                <li>@Html.ActionLink("EntryFees", "Index", "EntryFees", new { area = "" }, null)</li>
+                <li>@Html.ActionLink("Infos", "Index", "Info", new { area = "" }, null)</li>
+                <li>
+                    <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">Cashs</a>
+                    <ul class="collapse list-unstyled" id="homeSubmenu">
+                        <li>@Html.ActionLink("Etisalat Cash", "Index", "EtisalatCashes", new { area = "" }, null)</li>
+                        <li>@Html.ActionLink("Vodafone Cash", "Index", "VodafoneCashes", new { area = "" }, null)</li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false">Approval</a>
+                    <ul class="collapse list-unstyled" id="pageSubmenu">
+                        <li>@Html.ActionLink("User To Tournament", "UserTournament", "Approval", new { area = "" }, null)</li>
+                    </ul>
+                </li>
+            </ul>
+
+        </nav>
+}
+        <!-- Page Content Holder -->
+        <div id="content">
+
+            <nav class="navbar navbar-inverse">
+                <div class="container-fluid">
+
+@if (Request.IsAuthenticated)
+{
+                    <div class="navbar-header">
+                        <button type="button" id="sidebarCollapse" class="navbar-btn">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </button>
+                    </div>
+}
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        @Html.Partial("_LoginPartial")
+                    </div>
+
+
+                </div>
+            </nav>
+
+            <div class="container body-content">
+                @RenderBody()
+                <hr />
+                <footer>
+                    <p>&copy; @DateTime.Now.Year - Fantasista</p>
+                </footer>
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+
+    <!-- jQuery CDN -->
+    @Scripts.Render("~/bundles/lib")
+    @RenderSection("scripts", required: false)
+    <script type="text/javascript">
+        
+
+        $(document).ready(function () {
+
+            //$('#sidebar').toggleClass('active');
+            //$('#sidebarCollapse').toggleClass('active');
+
+                 $('#sidebarCollapse').on('click', function () {
+                     $('#sidebar').toggleClass('active');
+                     $(this).toggleClass('active');
+                 });
+
+                 //$("#sidebar").on('click', '.list-unstyled li', function () {
+                 //    console.log("list-unstyled")
+                 //    $(".list-unstyled li").removeClass("active");
+                 //    $(this).addClass("active");
+                 //});
+
+
+             });
+    </script>
 </body>
 </html>

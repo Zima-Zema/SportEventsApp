@@ -16,7 +16,7 @@ namespace SportEventsApp.ViewModel
         public IEnumerable<Event> Events { get; set; }
         public IEnumerable<Group> Groups { get; set; }
 
-        public User User { get; set; }
+        public ApplicationUser User { get; set; }
 
 
     }

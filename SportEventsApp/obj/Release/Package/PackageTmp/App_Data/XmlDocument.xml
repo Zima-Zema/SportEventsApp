@@ -492,7 +492,7 @@
             </summary>
             <param name="id">The ID of the Group.</param>
         </member>
-        <member name="M:SportEventsApp.Controllers.GroupsController.GetGroupByUserId(System.Int32)">
+        <member name="M:SportEventsApp.Controllers.GroupsController.GetGroupByUserId(System.String)">
             <summary>
             Get Group Data by UserID.
             </summary>
@@ -520,12 +520,6 @@
         <member name="M:SportEventsApp.Controllers.GroupsController.DeleteGroup(System.Int32)">
             <summary>
             Delete Group by Group id
-            </summary>
-            <param name="id">The ID of the Group.</param>
-        </member>
-        <member name="M:SportEventsApp.Controllers.UsersController.GetUserByGroupId(System.Int32)">
-            <summary>
-            Get Users Data by GroupID.
             </summary>
             <param name="id">The ID of the Group.</param>
         </member>

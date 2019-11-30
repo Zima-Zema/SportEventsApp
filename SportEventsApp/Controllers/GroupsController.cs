@@ -32,6 +32,13 @@ namespace SportEventsApp.Controllers
             return Ok(Groups);
         }
 
+        [HttpGet]
+        [Route("api/GetGroupsAdmin")]
+        public IHttpActionResult GetGroupsAdmin()
+        {
+            var Groups = db.Groups.Include(g => g.Event).Select(gg => new { gg.Id, gg.Name, gg.EventUsers.Count, eventName = gg.Event.Name }).ToList();
+            return Ok(Groups);
+        }
         // GET: api/Groups/5
         /// <summary>
         /// Get Group including event and List of users by ID.
@@ -39,7 +46,7 @@ namespace SportEventsApp.Controllers
         /// <param name="id">The ID of the Group.</param>
         public IHttpActionResult GetGroup(int id)
         {
-            Group group = db.Groups.Include(g => g.Event).Include(gg=>gg.Users).SingleOrDefault(gr => gr.Id == id);
+            Group group = db.Groups.Include(g => g.Event).SingleOrDefault(gr => gr.Id == id);
             if (group == null)
             {
                 return NotFound();
@@ -59,13 +66,13 @@ namespace SportEventsApp.Controllers
             {
                 return BadRequest();
             }
-            Group group = db.Users.SingleOrDefault(uu => uu.Id == userId).Group;
-            if (group == null)
+            var groups = db.Users.SingleOrDefault(uu => uu.Id == userId);
+            if (groups == null)
             {
                 return NotFound();
             }
 
-            return Ok(group);
+            return Ok(groups);
         }
         /// <summary>
         /// Get list of Groups by EventId.
@@ -157,7 +164,7 @@ namespace SportEventsApp.Controllers
             {
                 return NotFound();
             }
-            group.Users.ForEach(us => us.Group_ID = null);
+            //group.Users.Clear();
             db.Groups.Remove(group);
             db.SaveChanges();
 

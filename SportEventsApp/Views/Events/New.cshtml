@@ -46,64 +46,75 @@ else
     </div>
     <div class="row">
         <div class="form-group col-md-4">
-            @Html.LabelFor(m => m.Host_1)
-            @Html.TextBoxFor(m => m.Host_1, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.Host_1)
+            @Html.LabelFor(m => m.Store1)
+            @Html.DropDownListFor(m => m.Store1, new SelectList(Model.Stores, "Id", "StoreName"), "Select Store", new { @class = "form-control", @id = "store1" })
+            @Html.ValidationMessageFor(m => m.Store1)
         </div>
 
         <div class="form-group col-md-4">
-            @Html.LabelFor(m => m.Host_2)
-            @Html.TextBoxFor(m => m.Host_2, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.Host_2)
+            @Html.LabelFor(m => m.Store2)
+            @Html.DropDownListFor(m => m.Store2, new SelectList(Model.Stores, "Id", "StoreName"), "Select Store", new { @class = "form-control", @id = "store2" })
+            @Html.ValidationMessageFor(m => m.Store2)
         </div>
 
         <div class="form-group col-md-4">
-            @Html.LabelFor(m => m.Host_3)
-            @Html.TextBoxFor(m => m.Host_3, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.Host_3)
+            @Html.LabelFor(m => m.Store3)
+            @Html.DropDownListFor(m => m.Store3, new SelectList(Model.Stores, "Id", "StoreName"), "Select Store", new { @class = "form-control", @id = "store3" })
+            @Html.ValidationMessageFor(m => m.Store3)
         </div>
     </div>
 
     <div class="row">
 
         <div class="form-group col-md-4">
-            @Html.LabelFor(m => m.Date)
-            @Html.TextBoxFor(m => m.Date, "{0:yyyy-MM-dd}", new { @class = "form-control", @type = "date" })
-            @Html.ValidationMessageFor(m => m.Date)
+            @Html.LabelFor(m => m.Start)
+            @Html.TextBoxFor(m => m.Start, "{0:yyyy-MM-dd}", new { @class = "form-control", @type = "date" })
+            @Html.ValidationMessageFor(m => m.Start)
         </div>
-
         <div class="form-group col-md-4">
-            @Html.LabelFor(m => m.Time)
-            @Html.TextBoxFor(m => m.Time, new { @class = "form-control", @type = "time" })
-            @Html.ValidationMessageFor(m => m.Time)
+            @Html.LabelFor(m => m.End)
+            @Html.TextBoxFor(m => m.End, "{0:yyyy-MM-dd}", new { @class = "form-control", @type = "date" })
+            @Html.ValidationMessageFor(m => m.End)
         </div>
-
-
     </div>
 
     <div class="row">
         <div class="form-group col-md-4">
-            @Html.LabelFor(m => m.Entry_Fees)
-            @Html.TextBoxFor(m => m.Entry_Fees, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.Entry_Fees)
+            @Html.LabelFor(m => m.From)
+            @Html.TextBoxFor(m => m.From, new { @class = "form-control", @type = "time" })
+            @Html.ValidationMessageFor(m => m.From)
         </div>
         <div class="form-group col-md-4">
-            @Html.LabelFor(m => m.Address)
-            @Html.TextBoxFor(m => m.Address, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.Address)
+            @Html.LabelFor(m => m.To)
+            @Html.TextBoxFor(m => m.To, new { @class = "form-control", @type = "time" })
+            @Html.ValidationMessageFor(m => m.To)
         </div>
 
         <div class="form-group col-md-4">
+            @Html.LabelFor(m => m.Published)
+            @Html.DropDownListFor(m => m.Published, new SelectList(new[] { new { Value = "true", Text = "Publish" }, new { Value = "false", Text = "Hide" }, }, "Value", "Text"), "Select Event Status", new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Published)
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-group col-md-4">
+            @Html.LabelFor(m => m.EntryFees)
+            @Html.TextBoxFor(m => m.EntryFees, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.EntryFees)
+        </div>
+
+        @*<div class="form-group col-md-4">
             @Html.LabelFor(m => m.Location_URL)
             @Html.TextBoxFor(m => m.Location_URL, new { @class = "form-control" })
             @Html.ValidationMessageFor(m => m.Location_URL)
-        </div>
+        </div>*@
     </div>
     <div class="row">
         <div class="form-group col-md-4">
-            @Html.LabelFor(m => m.No_Of_Players)
-            @Html.TextBoxFor(m => m.No_Of_Players, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.No_Of_Players)
+            @Html.LabelFor(m => m.NoOfPlayers)
+            @Html.TextBoxFor(m => m.NoOfPlayers, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.NoOfPlayers)
         </div>
 
         <div class="form-group col-md-4">

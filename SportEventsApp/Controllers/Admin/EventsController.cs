@@ -22,8 +22,8 @@ namespace SportEventsApp.Controllers.Admin
    
         public ActionResult Index()
         {
-            var events = _context.Events.ToList();
-            return View(events);
+            //var events = _context.Events.ToList();
+            return View();
         }
         public ActionResult Details(int? id)
         {
@@ -36,12 +36,37 @@ namespace SportEventsApp.Controllers.Admin
             {
                 return HttpNotFound();
             }
-            return View(ev);
+            var usertour = (from eu in _context.EventUsers
+                            where eu.EventId == ev.Id
+                                select new UserTournamentViewModel
+                                {
+                                    CashNumber = eu.CashNumber,
+                                    GroupId = eu.GroupId,
+                                    EventId = eu.EventId,
+                                    UserId = eu.UserId,
+                                    Status = eu.Status,
+                                    Event = eu.Event,
+                                    Group = eu.Group,
+                                    User = eu.User,
+                                    Groups = _context.Groups.Where(gg => gg.Event_ID == eu.EventId).ToList()
+                                }
+                           ).ToList();
+
+            var viewModel = new EventsDetailsViewModel()
+            {
+                Event = ev,
+                Tours = usertour
+            };
+            return View(viewModel);
         }
 
         public ActionResult New()
         {
-            var ev = new EventsViewModel();
+            var stores = _context.Stores.Select(s => new StoreDropdown { Id=s.Id, StoreName=s.StoreName }).ToList();
+            var ev = new EventsViewModel()
+            {
+                Stores=stores
+            };
 
             return View(ev);
         }
@@ -51,29 +76,55 @@ namespace SportEventsApp.Controllers.Admin
         {
             if (!ModelState.IsValid)
             {
+                var stores = _context.Stores.Select(s => new StoreDropdown { Id = s.Id, StoreName = s.StoreName }).ToList();
+                model.Stores = stores;
                 return View("New", model);
             }
             if (model.Id == 0)
             {
                 var @event = new Event();
                 @event.Name = model.Name;
-                @event.Prize_1 = model.Prize_1;
-                @event.Prize_2 = model.Prize_2;
-                @event.Prize_3 = model.Prize_3;
-                @event.Host_1 = model.Host_1;
-                @event.Host_2 = model.Host_2;
-                @event.Host_3 = model.Host_3;
-                //@event.Date = model.Date.Date;
-                //@event.Time = model.Time;
-                @event.Entry_Fees = model.Entry_Fees;
-                @event.No_Of_Players = model.No_Of_Players;
+
+                @event.Prize_1 = model.Prize_1.Value;
+                @event.Prize_2 = model.Prize_2.Value;
+                @event.Prize_3 = model.Prize_3.Value;
+
+                @event.Start = model.Start.Value.Date;
+                @event.End = model.End.Value.Date;
+
+                @event.From = model.From.Value;
+                @event.To = model.To.Value;
+                
+                @event.Entry_Fees = model.EntryFees.Value;
+                @event.No_Of_Players = model.NoOfPlayers.Value;
                 @event.Type = model.Type;
-                @event.Match_Duration = model.Match_Duration;
-                @event.Address = model.Address;
+
+                @event.Published = model.Published.Value; 
+
                 @event.Location_URL = model.Location_URL;
+                @event.MatchDuration = model.Match_Duration.Value;
+
 
                 _context.Events.Add(@event);
                 _context.SaveChanges();
+
+                var fStore = _context.Stores.SingleOrDefault(s => s.Id == model.Store1.Value);
+                if (fStore != null)
+                {
+                    @event.Stores.Add(fStore);
+                }
+                var sStore = _context.Stores.SingleOrDefault(s => s.Id == model.Store2.Value);
+                if (sStore != null)
+                {
+                    @event.Stores.Add(sStore);
+                }
+                var tStore = _context.Stores.SingleOrDefault(s => s.Id == model.Store3.Value);
+                if (tStore != null)
+                {
+                    @event.Stores.Add(tStore);
+                }
+
+
                 foreach (var item in model.VodafoneCashNumbers)
                 {
                     var Vodafone = new VodafoneCash();
@@ -97,20 +148,42 @@ namespace SportEventsApp.Controllers.Admin
             {
                 var dbevent = _context.Events.SingleOrDefault(e => e.Id == model.Id);
                 dbevent.Name = model.Name;
-                dbevent.Prize_1 = model.Prize_1;
-                dbevent.Prize_2 = model.Prize_2;
-                dbevent.Prize_3 = model.Prize_3;
-                dbevent.Host_1 = model.Host_1;
-                dbevent.Host_2 = model.Host_2;
-                dbevent.Host_3 = model.Host_3;
-                //dbevent.Date = model.Date.Date;
-                //dbevent.Time = model.Time;
-                dbevent.Entry_Fees = model.Entry_Fees;
-                dbevent.No_Of_Players = model.No_Of_Players;
+                dbevent.Prize_1 = model.Prize_1.Value;
+                dbevent.Prize_2 = model.Prize_2.Value;
+                dbevent.Prize_3 = model.Prize_3.Value;
+
+
+                dbevent.Start = model.Start.Value.Date;
+                dbevent.End = model.End.Value.Date;
+
+                dbevent.From = model.From.Value;
+                dbevent.To = model.To.Value;
+
+                dbevent.Published = model.Published.Value;
+
+                dbevent.Entry_Fees = model.EntryFees.Value;
+                dbevent.No_Of_Players = model.NoOfPlayers.Value;
                 dbevent.Type = model.Type;
-                dbevent.Match_Duration = model.Match_Duration;
-                dbevent.Address = model.Address;
+                dbevent.MatchDuration = model.Match_Duration.Value;
                 dbevent.Location_URL = model.Location_URL;
+
+                dbevent.Stores.Clear();
+
+                var fStore = _context.Stores.SingleOrDefault(s => s.Id == model.Store1.Value);
+                if (fStore != null)
+                {
+                    dbevent.Stores.Add(fStore);
+                }
+                var sStore = _context.Stores.SingleOrDefault(s => s.Id == model.Store2.Value);
+                if (sStore != null)
+                {
+                    dbevent.Stores.Add(sStore);
+                }
+                var tStore = _context.Stores.SingleOrDefault(s => s.Id == model.Store3.Value);
+                if (tStore != null)
+                {
+                    dbevent.Stores.Add(tStore);
+                }
 
                 for (int i = 0; i < model.VodafoneCashNumbers.Count; i++)
                 {
@@ -161,6 +234,7 @@ namespace SportEventsApp.Controllers.Admin
             }
             var vCashList = _context.VodafoneCashs.Where(v => v.Event_ID == model.Id).Select(vc => vc.Number).ToList();
             var eCashList = _context.EtisalatCashs.Where(et => et.Event_ID == model.Id).Select(ee => ee.Number).ToList();
+            var stores = _context.Stores.Select(s => new StoreDropdown { Id = s.Id, StoreName = s.StoreName }).ToList();
             var viewModel = new EventsViewModel
             {
                 Id = model.Id,
@@ -168,16 +242,21 @@ namespace SportEventsApp.Controllers.Admin
                 Prize_1 = model.Prize_1,
                 Prize_2 = model.Prize_2,
                 Prize_3 = model.Prize_3,
-                Host_1 = model.Host_1,
-                Host_2 = model.Host_2,
-                Host_3 = model.Host_3,
-                //Date = model.Date.Date,
-                //Time = model.Time,
-                Entry_Fees = model.Entry_Fees,
-                No_Of_Players = model.No_Of_Players,
+                From = model.From,
+                To = model.To,
+                End = model.End,
+                Start = model.Start,
+                Match_Duration = model.MatchDuration,
+                Published = model.Published,
+                Store1 = model.Stores.FirstOrDefault() == null ? (int?)null : model.Stores.FirstOrDefault().Id,
+                Store2 = model.Stores.Skip(1).FirstOrDefault() == null ? (int?)null : model.Stores.Skip(1).FirstOrDefault().Id,
+                Store3 = model.Stores.Skip(2).FirstOrDefault() == null ? (int?)null : model.Stores.Skip(2).FirstOrDefault().Id,
+                Stores = stores,
+
+                EntryFees = model.Entry_Fees,
+                NoOfPlayers = model.No_Of_Players,
                 Type = model.Type,
-                Match_Duration = model.Match_Duration,
-                Address = model.Address,
+
                 Location_URL = model.Location_URL,
                 EtisalatCashNumbers = eCashList,
                 VodafoneCashNumbers = vCashList
@@ -186,4 +265,6 @@ namespace SportEventsApp.Controllers.Admin
             return View("New", viewModel);
         }
     }
+
+
 }

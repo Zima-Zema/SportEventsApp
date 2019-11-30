@@ -1,0 +1,127 @@
+﻿@model IEnumerable<SportEventsApp.ViewModel.InfoViewModel>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Infos</h2>
+
+
+<div class="dropdown">
+    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+        Add Info
+        <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu">
+        <li>@Html.ActionLink("Create Simple Info", "New", null, new { @class = "" })</li>
+        <li>@Html.ActionLink("Create Complex Info", "NewNested", null, new { @class = "" })</li>
+    </ul>
+</div>
+
+
+<table id="infos" class="table table-hover table-bordered">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Type)
+            </th>
+            <th>Operation</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+
+</table>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            var table = $("#infos").DataTable({
+                ajax: {
+                    url: "/api/GetInfoAdmin",
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "Title",
+                        render: function (data, type, info) {
+                            if (info.type == 1) {
+                                return "<a href='/Info/edit/" + info.id + "'>" + info.title + "</a>"
+                            } else {
+                                return "<a href='/Info/editNested/" + info.id + "'>" + info.title + "</a>"
+                            }
+
+                           
+                        }
+                    },
+                    {
+                        data: "type",
+                        render: function (t) {
+                            return t == 1 ? "Simple" : "Complex";
+                        }
+                    },
+                    {
+                        data: "id",
+                        render: function (data, type, info) {
+                            if (info.type == 1) {
+                                return "<button class='btn btn-danger btn-xs js-delete' data-info-type= " + info.type + " data-info-id=" + data + ">Delete</button>| <a class='btn btn-primary btn-xs' href='/Info/Details/" + data + "'>Details</a>";
+                            } else {
+                                return "<button class='btn btn-danger btn-xs js-delete' data-info-type= " + info.type + " data-info-id=" + data + ">Delete</button>| <a class='btn btn-primary btn-xs' href='/Info/DetailsNested/" + data + "'>Details</a>";
+                            }
+                            return 
+                        }
+                    }
+                ]
+            });
+
+            $("#infos").on("click", ".js-delete", function () {
+                var delbutton = $(this);
+                var type = delbutton.attr("data-info-type");
+                bootbox.confirm("Are You Sure To Delete This Info?!", function (result) {
+                    if (result) {
+                        if (type == 1) {
+                            $.ajax({
+                                url: "/api/DeleteInfo/" + delbutton.attr("data-info-id"),
+                                method: "DELETE",
+                                success: function () {
+                                    table.row(delbutton.parents("tr")).remove().draw();
+                                },
+                                error: function () {
+
+                                }
+
+
+                            });
+                        } else {
+                            $.ajax({
+                                url: "/api/DeleteNested/" + delbutton.attr("data-info-id"),
+                                method: "DELETE",
+                                success: function () {
+                                    table.row(delbutton.parents("tr")).remove().draw();
+                                },
+                                error: function () {
+
+                                }
+
+
+                            });
+                        }
+
+
+
+
+
+                    }
+
+
+                })
+
+            });
+
+        });
+
+    </script>
+
+}

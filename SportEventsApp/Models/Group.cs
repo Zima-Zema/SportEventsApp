@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -11,17 +12,21 @@ namespace SportEventsApp.Models
     {
         public Group()
         {
-            Users = new List<ApplicationUser>();
+            EventUsers = new List<EventUsers>();
         }
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
-        [InverseProperty("Group")]
-        public virtual List<ApplicationUser> Users { get; set; }
+       
 
         [ForeignKey("Event")][Required][Display(Name ="Event")]
         public int? Event_ID { get; set; }
+        //[JsonIgnore]
         public virtual Event Event { get; set; }
+
+        [InverseProperty("Group")]
+        //[JsonIgnore]
+        public virtual List<EventUsers> EventUsers { get; set; }
 
     }
 }

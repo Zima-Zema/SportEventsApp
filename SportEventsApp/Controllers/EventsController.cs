@@ -11,6 +11,7 @@ using System.Web.Http.Description;
 using SportEventsApp.Models;
 using SportEventsApp.ViewModel;
 using System.Web.Http.Cors;
+using System.Web.Mvc;
 
 namespace SportEventsApp.Controllers
 {
@@ -22,15 +23,105 @@ namespace SportEventsApp.Controllers
         // GET: api/Events
         public IHttpActionResult GetEvents()
         {
-            var events = db.Events.Include(ev => ev.VodafoneCashNumbers).Include(ee => ee.EtisalatCashNumbers).ToList();
+            var events = db.Events
+                .Where(ee => ee.Published == true)
+                .Include(ev => ev.VodafoneCashNumbers)
+                .Include(ee => ee.EtisalatCashNumbers)
+                .Include(ee=>ee.Stores)
+                .Include(e => e.EventUsers)
+                .Select(e=> new ReturnEventViewModel
+                {
+                    Id=e.Id,
+                    Name=e.Name,
+                    Prize1=e.Prize_1,
+                    Prize2=e.Prize_2,
+                    Prize3=e.Prize_3,
+                    Published=e.Published,
+                    End=e.End,
+                    Start=e.Start,
+                    From=e.From,
+                    EntryFees=e.Entry_Fees,
+                    Full=e.Full,
+                    MatchDuration=e.MatchDuration,
+                    NoOfPlayers=e.No_Of_Players,
+                    To=e.To,
+                    Type =e.Type,
+                    Stores=e.Stores.Select(s=> new ReturnEventStores
+                    {
+                        storeOwnerId=s.OwnerId,
+                        cityName = s.City.Name,
+                        storeName=s.StoreName
+                    }).ToList()
+                })
+                .ToList();
+            return Ok(events);
+        }
+
+        [System.Web.Http.HttpGet]
+        [System.Web.Http.Route("api/GetEventsAdmin")]
+        public IHttpActionResult GetEventsAdmin()
+        {
+            var events =  db.Events
+                
+                .Include(ev => ev.VodafoneCashNumbers)
+                .Include(ee => ee.EtisalatCashNumbers)
+                .Include(ee => ee.Stores)
+                .Include(e => e.EventUsers)
+                .Select(e => new ReturnEventViewModel
+                {
+                    Id = e.Id,
+                    Name = e.Name,
+                    Prize1 = e.Prize_1,
+                    Prize2 = e.Prize_2,
+                    Prize3 = e.Prize_3,
+                    Published = e.Published,
+                    End = e.End,
+                    Start = e.Start,
+                    From = e.From,
+                    EntryFees = e.Entry_Fees,
+                    Full = e.Full,
+                    MatchDuration = e.MatchDuration,
+                    NoOfPlayers = e.No_Of_Players,
+                    To = e.To,
+                    Type = e.Type,
+                }).ToList();
             return Ok(events);
         }
 
         // GET: api/Events/5
-        [ResponseType(typeof(Event))]
+        [ResponseType(typeof(ReturnEventViewModel))]
         public IHttpActionResult GetEvent(int id)
         {
-            Event @event = db.Events.Include(ev => ev.VodafoneCashNumbers).Include(ee => ee.EtisalatCashNumbers).SingleOrDefault(eve => eve.Id == id);
+            var @event = db.Events
+                .Include(ev => ev.VodafoneCashNumbers)
+                .Include(ee => ee.EtisalatCashNumbers)
+                .Include(e => e.EventUsers)
+                .Include(e => e.Stores)
+                .Select(e => new ReturnEventViewModel
+                {
+                    Id = e.Id,
+                    Name = e.Name,
+                    Prize1 = e.Prize_1,
+                    Prize2 = e.Prize_2,
+                    Prize3 = e.Prize_3,
+                    Published = e.Published,
+                    End = e.End,
+                    Start = e.Start,
+                    From = e.From,
+                    EntryFees = e.Entry_Fees,
+                    Full = e.Full,
+                    MatchDuration = e.MatchDuration,
+                    NoOfPlayers = e.No_Of_Players,
+                    To = e.To,
+                    Type = e.Type,
+                    Stores = e.Stores.Select(s => new ReturnEventStores
+                    {
+                        storeOwnerId = s.OwnerId,
+                        cityName = s.City.Name,
+                        storeName = s.StoreName
+                    }).ToList()
+                }).SingleOrDefault(eve => eve.Id == id);
+
             if (@event == null)
             {
                 return NotFound();
@@ -60,21 +151,20 @@ namespace SportEventsApp.Controllers
             }
 
             dbevent.Name = model.Name;
-            dbevent.Prize_1 = model.Prize_1;
-            dbevent.Prize_2 = model.Prize_2;
-            dbevent.Prize_3 = model.Prize_3;
-            dbevent.Host_1 = model.Host_1;
-            dbevent.Host_2 = model.Host_2;
-            dbevent.Host_3 = model.Host_3;
-            //dbevent.Date = model.Date.Date;
-            //dbevent.Time = model.Time;
-            dbevent.Entry_Fees = model.Entry_Fees;
-            dbevent.No_Of_Players = model.No_Of_Players;
+            dbevent.Prize_1 = model.Prize_1.Value;
+            dbevent.Prize_2 = model.Prize_2.Value;
+            dbevent.Prize_3 = model.Prize_3.Value;
+            dbevent.Entry_Fees = model.EntryFees.Value;
+            dbevent.No_Of_Players = model.NoOfPlayers.Value;
             dbevent.Type = model.Type;
-            dbevent.Match_Duration = model.Match_Duration;
-            dbevent.Address = model.Address;
+
             dbevent.Location_URL = model.Location_URL;
 
+            dbevent.Start = model.Start.Value.Date;
+            dbevent.End = model.End.Value.Date;
+            dbevent.From = model.From.Value;
+            dbevent.To = model.To.Value;
+            dbevent.Published = model.Published;
 
 
             for (int i = 0; i < model.VodafoneCashNumbers.Count; i++)
@@ -143,20 +233,18 @@ namespace SportEventsApp.Controllers
             }
             var @event = new Event();
             @event.Name = model.Name;
-            @event.Prize_1 = model.Prize_1;
-            @event.Prize_2 = model.Prize_2;
-            @event.Prize_3 = model.Prize_3;
-            @event.Host_1 = model.Host_1;
-            @event.Host_2 = model.Host_2;
-            @event.Host_3 = model.Host_3;
-            //@event.Date = model.Date.Date;
-            //@event.Time = model.Time;
-            @event.Entry_Fees = model.Entry_Fees;
-            @event.No_Of_Players = model.No_Of_Players;
+            @event.Prize_1 = model.Prize_1.Value;
+            @event.Prize_2 = model.Prize_2.Value;
+            @event.Prize_3 = model.Prize_3.Value;
+            @event.Entry_Fees = model.EntryFees.Value;
+            @event.No_Of_Players = model.NoOfPlayers.Value;
             @event.Type = model.Type;
-            @event.Match_Duration = model.Match_Duration;
-            @event.Address = model.Address;
             @event.Location_URL = model.Location_URL;
+            @event.Start = model.Start.Value.Date;
+            @event.End = model.End.Value.Date;
+            @event.From = model.From.Value;
+            @event.To = model.To.Value;
+            @event.Published = false;
 
             db.Events.Add(@event);
             db.SaveChanges();
@@ -193,7 +281,7 @@ namespace SportEventsApp.Controllers
             }
             @event.EtisalatCashNumbers.ForEach(et => et.Event_ID = null);
             @event.VodafoneCashNumbers.ForEach(v => v.Event_ID = null);
-            //@event.Users.ForEach(u => u.Event_ID = null);
+            @event.EventUsers.Clear();
             @event.Groups.ForEach(g => g.Event_ID = null);
             db.Events.Remove(@event);
             db.SaveChanges();

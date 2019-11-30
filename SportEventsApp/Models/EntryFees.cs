@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace SportEventsApp.Models
         public string Name { get; set; }
         public int? Value { get; set; }
 
-        [InverseProperty("EntryFee")]
+        [InverseProperty("EntryFee")][JsonIgnore]
         public virtual List<Match> Matches { get; set; }
 
     }

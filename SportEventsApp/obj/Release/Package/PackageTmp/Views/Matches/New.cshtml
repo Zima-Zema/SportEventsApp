@@ -1,0 +1,197 @@
+﻿@model SportEventsApp.ViewModel.NewMatchViewModel
+@{
+    ViewBag.Title = "New";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (Model.Id > 0)
+{
+    <h2>Edit Match</h2>
+}
+else
+{
+    <h2>New Match</h2>
+}
+
+@using (Html.BeginForm("Save", "Matches", FormMethod.Post))
+{
+    @Html.ValidationSummary(true, "Invalid Data")
+
+    <div class="row">
+
+        <div class="form-group col-md-6">
+            @Html.LabelFor(m => m.Date)
+            @Html.TextBoxFor(m => m.Date, "{0:yyyy-MM-dd}", new { @class = "form-control", @type = "date" })
+            @Html.ValidationMessageFor(m => m.Date)
+        </div>
+        <div class="form-group col-md-6">
+            @Html.LabelFor(m => m.Time)
+            @Html.TextBoxFor(m => m.Time, new { @class = "form-control", @type = "time" })
+            @Html.ValidationMessageFor(m => m.Time)
+        </div>
+        <div class="form-group col-md-6">
+            @Html.LabelFor(m => m.EntryFeesId)
+            @Html.DropDownListFor(cc => cc.EntryFeesId, new SelectList(Model.Fees, "Id", "Value", Model.EntryFeesId), "Select Fees", new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.EntryFeesId)
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-group col-md-6">
+            @Html.LabelFor(m => m.Type)
+            @Html.DropDownListFor(m => m.Type, new SelectList(new[] { new { Value = "PES", Text = "PES" }, new { Value = "FIFA", Text = "FIFA" }, }, "Value", "Text"), "Select Game Type", new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Type)
+        </div>
+        <div class="form-group col-md-6">
+            @Html.LabelFor(m => m.NofSlots)
+            @Html.DropDownListFor(m => m.NofSlots, new SelectList(new[] { new { Value = "2", Text = "2 Players" }, new { Value = "4", Text = "Multiplayer" }, }, "Value", "Text"), "Select Game Mode", new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.NofSlots)
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-group col-md-6">
+            @Html.LabelFor(m => m.CityId)
+            @Html.DropDownListFor(cc => cc.CityId, new SelectList(Model.Cities, "Id", "Name",Model.CityId), "Select City", new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.CityId)
+        </div>
+
+        <div class="form-group col-md-6">
+                @Html.LabelFor(m => m.StoreId)
+                <select id="StoreId" name="StoreId" class="form-control">
+
+                </select>
+                @Html.ValidationMessageFor(m => m.StoreId)
+            </div>
+    </div>
+    <div class="row">
+        @*<div class="form-group col-md-6">
+            @Html.LabelFor(m => m.CreatorId)
+            @Html.DropDownListFor(cc => cc.CreatorId, new SelectList(Model.Creators, "Id", "Name", Model.CreatorId), "Select Creator", new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.CreatorId)
+        </div>*@
+        <div class="form-group col-md-6">
+            @Html.LabelFor(m => m.Prize)
+            @Html.TextBoxFor(m => m.Prize, new { @class = "form-control", @readonly = "readonly", @type = "number" })
+            @Html.ValidationMessageFor(m => m.Prize)
+        </div>
+    </div>
+
+    @Html.HiddenFor(m => m.Id)
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <div class="form-group col-md-6">
+            @Html.ActionLink("Back", "Index", null, new { @class = "btn btn-default col-md-6" })
+        </div>
+        <div class="form-group col-md-6">
+            <input type="submit" value="Save" class="btn btn-success col-md-6" />
+        </div>
+    </div>
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(function () {
+            var cId = $("#CityId").val();
+            var storeDropDown = $("#StoreId");
+            if (cId) {
+                $.ajax({
+                    url: "/api/GetStoreByCityId/" + cId,
+                    method: "GET",
+                    success: function (stores) {
+                        storeDropDown.empty();
+                        $("<option />")
+                            .attr("value", "")
+                            .html("Select Store")
+                            .appendTo(storeDropDown);
+
+                        $.each(stores, function () {
+                            $("<option />")
+                            .attr("value", this.id)
+                            .html(this.storeName)
+                            .appendTo(storeDropDown);
+                        });
+                        storeDropDown.val(@Model.StoreId);
+                    },
+                    error: function () {
+
+                    }
+                })
+            }
+            $("#CityId").on("change", function (e) {
+                var cityValue = $(this).val();
+                var storeDropDown = $("#StoreId");
+
+                console.log("cityValue", cityValue)
+                $.ajax({
+                    url: "/api/GetStoreByCityId/" + cityValue,
+                    method: "GET",
+                    success: function (stores) {
+                        storeDropDown.empty();
+                        $("<option />")
+                            .attr("value", "")
+                            .html("Select Store")
+                            .appendTo(storeDropDown);
+                        
+                        $.each(stores, function () {
+                            $("<option />")
+                            .attr("value", this.id)
+                            .html(this.storeName)
+                            .appendTo(storeDropDown);
+                        });
+                        console.log(stores)
+                    },
+                    error: function () {
+
+                    }
+                })
+            })
+
+            $("#NofSlots").on("change", function (e) {
+                var slots = Number.parseInt($("#NofSlots").val());
+                var fees = Number.parseInt($("#EntryFeesId option:selected").text());
+                var prize;
+                console.log("slots", slots);
+                console.log("fees", fees);
+
+                if (slots == 2 && fees) {
+                    prize = (fees * 2) - 10;
+                    console.log("prize", prize)
+                    $("#Prize").val(prize);
+                   
+                }
+                else if (slots == 4 && fees) {
+                    prize = (fees * 4) - 15;
+                    $("#Prize").val(prize);
+                    console.log("prize", prize)
+                } else {
+                    $("#Prize").val("");
+                }
+
+            })
+
+            $("#EntryFeesId").on("change", function (e) {
+                var slots = Number.parseInt($("#NofSlots").val());
+                var fees = Number.parseInt($("#EntryFeesId option:selected").text());
+                var prize;
+                console.log("slots", slots);
+                console.log("fees", fees);
+
+                if (slots == 2 && fees) {
+                    prize = (fees * 2) - 10;
+                    $("#Prize").val(prize);
+                    console.log("prize", prize)
+                }
+                else if (slots == 4 && fees) {
+                    prize = (fees * 4) - 15;
+                    $("#Prize").val(prize);
+                    console.log("prize", prize)
+                } else {
+                    $("#Prize").val("");
+                }
+            })
+        })
+    </script>
+}
